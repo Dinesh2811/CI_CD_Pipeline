@@ -88,5 +88,6 @@ dependencies {
     implementation("androidx.compose:compose-bom:2023.08.00")
     androidTestImplementation("androidx.compose:compose-bom:2023.08.00")
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:2.19.0")
 
 }
