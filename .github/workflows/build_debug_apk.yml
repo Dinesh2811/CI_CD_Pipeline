@@ -1,0 +1,11 @@
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - chmod +x gradlew  # Make the gradlew script executable
+    - ./gradlew assembleDebug  # Build the debug APK
+  artifacts:
+    paths:
+      - app/build/outputs/apk/debug/app-debug.apk  # Define the path to the generated APK
