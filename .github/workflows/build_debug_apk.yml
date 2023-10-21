@@ -1,11 +1,38 @@
-stages:
-  - build
+name: Android CI
 
-build:
-  stage: build
-  script:
-    - chmod +x gradlew  # Make the gradlew script executable
-    - ./gradlew assembleDebug  # Build the debug APK
-  artifacts:
-    paths:
-      - app/build/outputs/apk/debug/app-debug.apk  # Define the path to the generated APK
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: 17
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build debug APK
+      run: ./gradlew assembleDebug
+
+    - name: Move APK to the root
+      run: mv app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
+
+    - name: Archive APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-debug
+        path: ./app-debug.apk
