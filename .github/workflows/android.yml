@@ -22,14 +22,13 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          node-version: [16.x]
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-
-    - name: Use Node.js 16.x
-      uses: actions/setup-node@v4
-      with:
-        node-version: '16.x'
 
     - name: Build with Gradle
       run: ./gradlew build
@@ -42,4 +41,3 @@ jobs:
       with:
         name: debug-apk
         path: app-debug.apk
-
