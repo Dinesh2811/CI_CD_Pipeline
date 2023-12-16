@@ -26,7 +26,7 @@ jobs:
       run: ./gradlew build
 
     - name: Build and sign release APK
-      run: ./gradlew bundleRelease
+      run: ./gradlew assembleRelease
 
     - name: Copy release APK to root
       run: cp app/build/outputs/apk/release/app-release.apk app-release.apk
