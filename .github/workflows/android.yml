@@ -33,6 +33,8 @@ jobs:
 
       - name: Build and sign release APK
         run: ./gradlew assembleRelease
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v3
         with:
           name: release-apk
