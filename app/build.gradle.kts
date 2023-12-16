@@ -9,6 +9,12 @@ android {
     namespace = "com.dinesh.android"
     compileSdk = 34
 
+    val data: String? = System.getenv("MYAPP_UAT_STORE_FILE")
+    var file: Any = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+    if (!data.isNullOrEmpty()) {
+        file = System.getenv("MYAPP_RELEASE_STORE_FILE")
+    }
+
     signingConfigs {
         create("release") {
             storeFile = file(System.getenv("MYAPP_RELEASE_STORE_FILE")?: "${rootProject.projectDir}/dinesh28-release-key.jks")
@@ -54,7 +60,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+//            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
