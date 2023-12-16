@@ -43,7 +43,7 @@ jobs:
         run: ./gradlew assembleRelease
 
       - name: Sign Release APK
-        uses: Dinesh2811/sign-android-release@v1
+        uses: Dinesh2811/CI_CD_Pipeline@v1
         with:
           releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.MYAPP_RELEASE_STORE_FILE }}
