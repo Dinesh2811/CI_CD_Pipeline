@@ -10,19 +10,34 @@ android {
     compileSdk = 34
 
     signingConfigs {
-        create("release"){
-            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
-            storePassword = "dinesh28Android"
-            keyAlias = "dinesh28-key-alias"
-            keyPassword = "dinesh28Android"
+        create("release") {
+            storeFile = file(System.getenv("MYAPP_RELEASE_STORE_FILE")?: "${rootProject.projectDir}/dinesh28-release-key.jks")
+            storePassword = System.getenv("MYAPP_RELEASE_STORE_PASSWORD") ?: ""
+            keyAlias = System.getenv("MYAPP_RELEASE_KEY_ALIAS") ?: "dinesh28-key-alias"
+            keyPassword = System.getenv("MYAPP_RELEASE_KEY_PASSWORD") ?: ""
         }
         getByName("debug") {
-            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
-            storePassword = "dinesh28Android"
-            keyAlias = "dinesh28-key-alias"
-            keyPassword = "dinesh28Android"
+            storeFile = file(System.getenv("MYAPP_UAT_STORE_FILE")?: "${rootProject.projectDir}/dinesh28-release-key.jks")
+            storePassword = System.getenv("MYAPP_UAT_STORE_PASSWORD") ?: "dinesh28Android"
+            keyAlias = System.getenv("MYAPP_UAT_KEY_ALIAS") ?: "dinesh28-key-alias"
+            keyPassword = System.getenv("MYAPP_UAT_KEY_PASSWORD") ?: "dinesh28Android"
         }
     }
+
+//    signingConfigs {
+//        create("release"){
+//            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+//            storePassword = "dinesh28Android"
+//            keyAlias = "dinesh28-key-alias"
+//            keyPassword = "dinesh28Android"
+//        }
+//        getByName("debug") {
+//            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+//            storePassword = "dinesh28Android"
+//            keyAlias = "dinesh28-key-alias"
+//            keyPassword = "dinesh28Android"
+//        }
+//    }
 
     defaultConfig {
         applicationId = "com.dinesh.android"
