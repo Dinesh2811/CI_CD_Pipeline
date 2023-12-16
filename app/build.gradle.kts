@@ -8,7 +8,21 @@ plugins {
 android {
     namespace = "com.dinesh.android"
     compileSdk = 34
-    compileSdkPreview = "UpsideDownCake"
+
+    signingConfigs {
+        create("release"){
+            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+            storePassword = "dinesh28Android"
+            keyAlias = "dinesh28-key-alias"
+            keyPassword = "dinesh28Android"
+        }
+        getByName("debug") {
+            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+            storePassword = "dinesh28Android"
+            keyAlias = "dinesh28-key-alias"
+            keyPassword = "dinesh28Android"
+        }
+    }
 
     defaultConfig {
         applicationId = "com.dinesh.android"
@@ -23,10 +37,27 @@ android {
         }
     }
 
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            testCoverage {
+                enableUnitTestCoverage = false
+                enableAndroidTestCoverage = false
+            }
+        }
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+//            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
+            isShrinkResources = false
+            testCoverage {
+                enableUnitTestCoverage = true
+                enableAndroidTestCoverage = true
+            }
         }
     }
     compileOptions {
