@@ -29,10 +29,10 @@ jobs:
       run: ./gradlew bundleRelease
 
     - name: Copy release APK to root
-      run: cp app/build/outputs/bundle/release/app-release.aab app-release.aab
+      run: cp app/build/outputs/apk/release/app-release.apk app-release.apk
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v2
       with:
         name: release-apk
-        path: app/build/outputs/bundle/release/app-release.aab
+        path: app/build/outputs/apk/release/app-release.apk
