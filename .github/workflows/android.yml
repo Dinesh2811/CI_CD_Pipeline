@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: [ "master" ]
 
+  workflow_dispatch:
+
 jobs:
-  build:
+  package-release-apk:
+    name: Generate release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -32,16 +35,11 @@ jobs:
         run: ./gradlew build
 
       - name: Build and sign release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease --stacktrace
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-apk
-          path: app/build/outputs/apk/release/*.apk
-
-      - name: Upload CI APK artifact
-        uses: actions/upload-artifact@v3
+      - name: Sign APK with keystore
+        uses: Dinesh2811/CI_CD_Pipeline@v1
+        id: sign_app
         with:
           releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.MYAPP_RELEASE_STORE_FILE }}
@@ -50,3 +48,12 @@ jobs:
           keyPassword: ${{ secrets.MYAPP_RELEASE_KEY_PASSWORD }}
         env:
           BUILD_TOOLS_VERSION: "34.0.0"
+
+      - name: Upload release CI APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.apk
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+
+      - name: Echo APK
+        run: echo Signed APK FILE ${{steps.sign_app.outputs.signedReleaseFile}}
