@@ -24,3 +24,16 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+
+    - uses: Dinesh2811/CI_CD_Pipeline@v1
+      name: Sign app APK
+      id: sign_app
+      with:
+        releaseDirectory: app/build/outputs/apk/release
+        signingKeyBase64: ${{ secrets.MYAPP_RELEASE_STORE_FILE }}
+        alias: ${{ secrets.MYAPP_RELEASE_KEY_ALIAS }}
+        keyStorePassword: ${{ secrets.MYAPP_RELEASE_STORE_PASSWORD }}
+        keyPassword: ${{ secrets.MYAPP_RELEASE_KEY_PASSWORD }}
+        zipAlign: true
+      env:
+        BUILD_TOOLS_VERSION: "34.0.0"
