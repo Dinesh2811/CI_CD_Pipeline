@@ -25,5 +25,14 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    - name: Sign app APK
-      run: ./gradlew assembleRelease
+    - name: Build and sign release APK
+      run: ./gradlew bundleRelease
+
+    - name: Copy release APK to root
+      run: cp app/build/outputs/bundle/release/app-release.aab app-release.aab
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-apk
+        path: app/build/outputs/bundle/release/app-release.aab
