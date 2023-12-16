@@ -39,22 +39,3 @@ jobs:
         with:
           name: release-apk
           path: app/build/outputs/apk/release/*.apk
-
-      - name: Sign Release APK
-        uses: Dinesh2811/CI_CD_Pipeline@v1
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.MYAPP_RELEASE_STORE_FILE }}
-          keyStorePassword: ${{ secrets.MYAPP_RELEASE_STORE_PASSWORD }}
-          alias: ${{ secrets.MYAPP_RELEASE_KEY_ALIAS }}
-          keyPassword: ${{ secrets.MYAPP_RELEASE_KEY_PASSWORD }}
-
-      - name: Copy release APK to root
-        run: cp app/build/outputs/apk/release/*.apk app-release.apk
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-apk
-          path: app/build/outputs/apk/release/*.apk
-
