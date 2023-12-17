@@ -1,28 +1,11 @@
 plugins {
-//    alias(libs.plugins.androidApplication)
-//    alias(libs.plugins.kotlinAndroid)
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.dinesh.android"
+    namespace = "com.dinesh.android.playground"
     compileSdk = 34
-
-//    signingConfigs {
-//        create("release") {
-//            storeFile = file(System.getenv("MYAPP_RELEASE_STORE_FILE")?: "${rootProject.projectDir}/dinesh28-release-key.jks")
-//            storePassword = System.getenv("MYAPP_RELEASE_STORE_PASSWORD") ?: "dinesh28Android"
-//            keyAlias = System.getenv("MYAPP_RELEASE_KEY_ALIAS") ?: "dinesh28-key-alias"
-//            keyPassword = System.getenv("MYAPP_RELEASE_KEY_PASSWORD") ?: "dinesh28Android"
-//        }
-//        getByName("debug") {
-//            storeFile = file(System.getenv("MYAPP_UAT_STORE_FILE")?: "${rootProject.projectDir}/dinesh28-release-key.jks")
-//            storePassword = System.getenv("MYAPP_UAT_STORE_PASSWORD") ?: "dinesh28Android"
-//            keyAlias = System.getenv("MYAPP_UAT_KEY_ALIAS") ?: "dinesh28-key-alias"
-//            keyPassword = System.getenv("MYAPP_UAT_KEY_PASSWORD") ?: "dinesh28Android"
-//        }
-//    }
 
     signingConfigs {
         create("release"){
@@ -40,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.dinesh.android"
+        applicationId = "com.dinesh.android.playground"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -74,27 +57,9 @@ android {
             }
         }
     }
-
-    flavorDimensions.add("versions")
-
-    productFlavors {
-        create("freeVersion") {
-            dimension = "versions"
-            applicationIdSuffix = ".free"
-//            applicationId = "com.dinesh.free"
-//            versionNameSuffix = "-free"
-        }
-        create("paidVersion") {
-            dimension = "versions"
-            applicationIdSuffix = ".paid"
-//            applicationId = "com.dinesh.paid"
-//            versionNameSuffix = "-paid"
-        }
-    }
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlin {
         jvmToolchain(JavaVersion.VERSION_17.toString().toInt())

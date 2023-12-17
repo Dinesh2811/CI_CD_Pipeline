@@ -16,6 +16,8 @@ jobs:
       matrix:
         api-level: [24, 34]
         gradle-version: [8.5]
+        flavour: [freeVersion, paidVersion]
+        module: [app, Playground]
 
     steps:
       - name: Checkout code
@@ -84,3 +86,21 @@ jobs:
           path: |
             build/*.log
             app/build/reports
+
+      - name: Build and sign release APK for each variant
+        # Use the gradle command with the flavour and module name as parameters
+        run: ./gradlew ${{ matrix.module }}:assemble${{ matrix.flavour }}Release --stacktrace
+        continue-on-error: true
+
+      - name: Zip all the APK files
+        # Zip all the APK files in the outputs folder
+        run: zip -r apk.zip */build/outputs/apk/*/*.apk
+        continue-on-error: true
+
+      - name: Upload Zip APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          # Upload the zip file as an artifact
+          path: apk.zip
+        continue-on-error: true

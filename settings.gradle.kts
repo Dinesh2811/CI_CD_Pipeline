@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CI_CD_Pipeline"
 include(":app")
- 
+include(":Playground")
