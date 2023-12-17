@@ -60,13 +60,18 @@ jobs:
         continue-on-error: true
 
       - name: Upload APK artifact
-        run: |
-          app/build/outputs/apk/freeVersion/release/*.apk
-          app/build/outputs/apk/paidVersion/release/*.apk
-          Playground/build/outputs/apk/release/*.apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          # Upload the APK files as an artifact
+          path: |
+            app/build/outputs/apk/freeVersion/release/*.apk
+            app/build/outputs/apk/paidVersion/release/*.apk
+            Playground/build/outputs/apk/release/*.apk
         continue-on-error: true
 
-#      - name: Upload APK artifact
+
+      #      - name: Upload APK artifact
 #        uses: actions/upload-artifact@v3
 #        with:
 #          name: release-apk
