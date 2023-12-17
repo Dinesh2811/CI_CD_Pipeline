@@ -2,18 +2,13 @@ name: Testing
 
 on:
   push:
-    branches: [ "*" ]
+#    branches: [ "*" ]
   pull_request:
-    branches: [ "master" ]
+#    branches: [ "master" ]
   workflow_dispatch:
-#  workflow_run:
-#    workflows: ["Testing"]
-#    types:
-#      - workflow_dispatch
 
 jobs:
   build:
-#    if: github.event_name == 'workflow_run' || (github.event_name == 'workflow_dispatch' && github.actor == 'Dinesh2811')
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -25,9 +20,6 @@ jobs:
         module: [Playground]
 
     steps:
-#      - name: Manual trigger check
-#        if: github.event_name != 'workflow_dispatch'
-#        run: exit 0
 
       - name: Checkout code
         uses: actions/checkout@v3
@@ -67,12 +59,12 @@ jobs:
         run: ./gradlew assembleRelease --stacktrace
         continue-on-error: true
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-apk
-          path: app/build/outputs/apk/release/*.apk
-        continue-on-error: true
+#      - name: Upload APK artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: release-apk
+#          path: app/build/outputs/apk/release/*.apk
+#        continue-on-error: true
 
 #      - name: Zip all the signed APK files
 #        # Zip all the signed APK files into one file named apk.zip
@@ -86,7 +78,11 @@ jobs:
         run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
         continue-on-error: true
 
-
+      - name: Zip all signed the signed APK files
+        # Zip all the signed APK files into one file named apk.zip
+        # Specify the exact files or directories that you want to zip
+        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
+        continue-on-error: true
 
       - name: Output details on failure
         if: failure()
