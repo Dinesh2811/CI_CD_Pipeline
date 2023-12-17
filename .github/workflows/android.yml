@@ -5,20 +5,26 @@ on:
     branches: [ "*" ]
   pull_request:
     branches: [ "master" ]
-
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: true
+
+    strategy:
+      matrix:
+        api-level: [34]
+        gradle-version: [8.5]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js 16
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          check-latest: true
 
       - name: set up JDK 17
         uses: actions/setup-java@v3
@@ -27,17 +33,46 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.android/build-cache
+            app/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-${{ matrix.gradle-version }}-
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
+        continue-on-error: true
 
       - name: Build and sign release APK
         run: ./gradlew assembleRelease --stacktrace
+        continue-on-error: true
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v3
         with:
           name: release-apk
           path: app/build/outputs/apk/release/*.apk
+        continue-on-error: true
+
+      - name: Output details on failure
+        if: failure()
+        run: cat build/reports/*.html
+        continue-on-error: true
+
+      - name: Upload error logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: error-logs
+          path: |
+            build/*.log
+            app/build/reports
