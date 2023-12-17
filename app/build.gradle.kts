@@ -24,20 +24,20 @@ android {
 //        }
 //    }
 
-//    signingConfigs {
-//        create("release"){
-//            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
-//            storePassword = "dinesh28Android"
-//            keyAlias = "dinesh28-key-alias"
-//            keyPassword = "dinesh28Android"
-//        }
-//        getByName("debug") {
-//            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
-//            storePassword = "dinesh28Android"
-//            keyAlias = "dinesh28-key-alias"
-//            keyPassword = "dinesh28Android"
-//        }
-//    }
+    signingConfigs {
+        create("release"){
+            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+            storePassword = "dinesh28Android"
+            keyAlias = "dinesh28-key-alias"
+            keyPassword = "dinesh28Android"
+        }
+        getByName("debug") {
+            storeFile = file("${rootProject.projectDir}/dinesh28-release-key.jks")
+            storePassword = "dinesh28Android"
+            keyAlias = "dinesh28-key-alias"
+            keyPassword = "dinesh28Android"
+        }
+    }
 
     defaultConfig {
         applicationId = "com.dinesh.android"
@@ -54,7 +54,7 @@ android {
 
     buildTypes {
         release {
-//            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -64,7 +64,7 @@ android {
             }
         }
         debug {
-//            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("debug")
 //            applicationIdSuffix = ".debug"
             isMinifyEnabled = false
             isShrinkResources = false
