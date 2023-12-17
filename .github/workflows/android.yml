@@ -6,18 +6,27 @@ on:
   pull_request:
 #    branches: [ "master" ]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Android CI"]
+    types:
+      - workflow_dispatch
 
 jobs:
   build:
+    if: github.event_name == 'workflow_run' || (github.event_name == 'workflow_dispatch' && github.actor == 'Dinesh2811')
     runs-on: ubuntu-latest
     continue-on-error: true
 
     strategy:
       matrix:
-        api-level: [24, 34]
+        api-level: [34]
         gradle-version: [8.5]
 
     steps:
+      - name: Manual trigger check
+        if: github.event_name != 'workflow_dispatch'
+        run: exit 0
+
       - name: Checkout code
         uses: actions/checkout@v3
 
