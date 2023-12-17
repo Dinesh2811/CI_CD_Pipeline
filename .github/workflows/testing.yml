@@ -2,9 +2,9 @@ name: Testing
 
 on:
   push:
-#    branches: [ "*" ]
+    branches: [ "*" ]
   pull_request:
-#    branches: [ "master" ]
+    branches: [ "master" ]
   workflow_dispatch:
   workflow_run:
     workflows: ["Testing"]
