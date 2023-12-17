@@ -1,19 +1,14 @@
 name: Multi Module Build Generate
 
 on:
-  push:
-#    branches: [ "*" ]
-  pull_request:
-#    branches: [ "master" ]
+  #  push:
+  #    branches: [ "*" ]
+  #  pull_request:
+  #    branches: [ "master" ]
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Multi Module Build Generate"]
-    types:
-      - workflow_dispatch
 
 jobs:
   build:
-    if: github.event_name == 'workflow_run' || (github.event_name == 'workflow_dispatch' && github.actor == 'Dinesh2811')
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -21,14 +16,10 @@ jobs:
       matrix:
         api-level: [34]
         gradle-version: [8.5]
-#        flavour: [freeVersion, paidVersion]
-#        module: [app, Playground]
+        flavour: [freeVersion, paidVersion]
+        module: [Playground]
 
     steps:
-      - name: Manual trigger check
-        if: github.event_name != 'workflow_dispatch'
-        run: exit 0
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -71,25 +62,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release-apk
-          path: app/build/outputs/apk/release/*.apk
+          # Upload the APK files as an artifact
+          path: |
+            app/build/outputs/apk/freeVersion/release/*.apk
+            app/build/outputs/apk/paidVersion/release/*.apk
+            Playground/build/outputs/apk/release/*.apk
         continue-on-error: true
-#
-#      - name: Build and sign release APK for each variant
-#        # Use the gradle command with the flavour and module name as parameters
-#        run: ./gradlew ${{ matrix.module }}:assemble${{ matrix.flavour }}Release --stacktrace
-#        continue-on-error: true
-#
-#      - name: Zip all the APK files
-#        run: zip -r apk.zip */build/outputs/apk/*/*.apk
-#        continue-on-error: true
-#
-#      - name: Upload Zip APK artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: release-apk
-#          # Upload the zip file as an artifact
-#          path: apk.zip
-#        continue-on-error: true
 
       - name: Output details on failure
         if: failure()

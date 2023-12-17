@@ -1,9 +1,9 @@
 name: Testing
 
 on:
-  push:
+#  push:
 #    branches: [ "*" ]
-  pull_request:
+#  pull_request:
 #    branches: [ "master" ]
   workflow_dispatch:
 
@@ -20,7 +20,6 @@ jobs:
         module: [Playground]
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -69,45 +68,6 @@ jobs:
             app/build/outputs/apk/paidVersion/release/*.apk
             Playground/build/outputs/apk/release/*.apk
         continue-on-error: true
-
-
-      #      - name: Upload APK artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: release-apk
-#          path: app/build/outputs/apk/release/*.apk
-#        continue-on-error: true
-
-#      - name: Zip all the signed APK files
-#        # Zip all the signed APK files into one file named apk.zip
-#        # Use the -i option to include only the files that match the pattern
-#        run: zip -r apk.zip . -i */build/outputs/apk/*/*.apk
-#        continue-on-error: true
-
-
-
-
-
-
-
-#      - name: Zip all the signed APK files
-#        # Zip all the signed APK files into one file named apk.zip
-#        # Specify the exact files or directories that you want to zip
-#        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
-#        continue-on-error: true
-#
-#      - name: Zip all signed the signed APK files
-#        # Zip all the signed APK files into one file named apk.zip
-#        # Specify the exact files or directories that you want to zip
-#        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
-#        continue-on-error: true
-
-
-
-
-
-
-
 
       - name: Output details on failure
         if: failure()
