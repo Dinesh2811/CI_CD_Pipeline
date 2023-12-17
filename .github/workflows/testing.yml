@@ -14,8 +14,10 @@ jobs:
 
     strategy:
       matrix:
-        api-level: [24, 34]
+        api-level: [34]
         gradle-version: [8.5]
+        flavour: [freeVersion, paidVersion]
+        module: [Playground]
 
     steps:
       - name: Checkout code
@@ -48,14 +50,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-#      - name: Run lint checks
-#        run: ./gradlew lint
-#        continue-on-error: true
-#
-#      - name: Run unit tests
-#        run: ./gradlew test
-#        continue-on-error: true
-
       - name: Build with Gradle
         run: ./gradlew build
         continue-on-error: true
@@ -70,6 +64,20 @@ jobs:
           name: release-apk
           path: app/build/outputs/apk/release/*.apk
         continue-on-error: true
+
+#      - name: Zip all the signed APK files
+#        # Zip all the signed APK files into one file named apk.zip
+#        # Use the -i option to include only the files that match the pattern
+#        run: zip -r apk.zip . -i */build/outputs/apk/*/*.apk
+#        continue-on-error: true
+
+      - name: Zip all the signed APK files
+        # Zip all the signed APK files into one file named apk.zip
+        # Specify the exact files or directories that you want to zip
+        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
+        continue-on-error: true
+
+
 
       - name: Output details on failure
         if: failure()

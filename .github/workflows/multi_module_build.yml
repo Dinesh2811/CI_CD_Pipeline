@@ -14,8 +14,10 @@ jobs:
 
     strategy:
       matrix:
-        api-level: [24, 34]
+        api-level: [34]
         gradle-version: [8.5]
+        flavour: [freeVersion, paidVersion]
+        module: [app, Playground]
 
     steps:
       - name: Checkout code
@@ -48,14 +50,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-#      - name: Run lint checks
-#        run: ./gradlew lint
-#        continue-on-error: true
-#
-#      - name: Run unit tests
-#        run: ./gradlew test
-#        continue-on-error: true
-
       - name: Build with Gradle
         run: ./gradlew build
         continue-on-error: true
@@ -70,6 +64,23 @@ jobs:
           name: release-apk
           path: app/build/outputs/apk/release/*.apk
         continue-on-error: true
+#
+#      - name: Build and sign release APK for each variant
+#        # Use the gradle command with the flavour and module name as parameters
+#        run: ./gradlew ${{ matrix.module }}:assemble${{ matrix.flavour }}Release --stacktrace
+#        continue-on-error: true
+#
+#      - name: Zip all the APK files
+#        run: zip -r apk.zip */build/outputs/apk/*/*.apk
+#        continue-on-error: true
+#
+#      - name: Upload Zip APK artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: release-apk
+#          # Upload the zip file as an artifact
+#          path: apk.zip
+#        continue-on-error: true
 
       - name: Output details on failure
         if: failure()
