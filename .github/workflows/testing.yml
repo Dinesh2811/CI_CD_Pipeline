@@ -59,6 +59,13 @@ jobs:
         run: ./gradlew assembleRelease --stacktrace
         continue-on-error: true
 
+      - name: Upload APK artifact
+        run: |
+          app/build/outputs/apk/freeVersion/release/*.apk
+          app/build/outputs/apk/paidVersion/release/*.apk
+          Playground/build/outputs/apk/release/*.apk
+        continue-on-error: true
+
 #      - name: Upload APK artifact
 #        uses: actions/upload-artifact@v3
 #        with:
@@ -72,17 +79,30 @@ jobs:
 #        run: zip -r apk.zip . -i */build/outputs/apk/*/*.apk
 #        continue-on-error: true
 
-      - name: Zip all the signed APK files
-        # Zip all the signed APK files into one file named apk.zip
-        # Specify the exact files or directories that you want to zip
-        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
-        continue-on-error: true
 
-      - name: Zip all signed the signed APK files
-        # Zip all the signed APK files into one file named apk.zip
-        # Specify the exact files or directories that you want to zip
-        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
-        continue-on-error: true
+
+
+
+
+
+#      - name: Zip all the signed APK files
+#        # Zip all the signed APK files into one file named apk.zip
+#        # Specify the exact files or directories that you want to zip
+#        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
+#        continue-on-error: true
+#
+#      - name: Zip all signed the signed APK files
+#        # Zip all the signed APK files into one file named apk.zip
+#        # Specify the exact files or directories that you want to zip
+#        run: zip -r apk.zip app/build/outputs/apk/freeVersion/release app/build/outputs/apk/paidVersion/release Playground/build/outputs/apk/release
+#        continue-on-error: true
+
+
+
+
+
+
+
 
       - name: Output details on failure
         if: failure()
